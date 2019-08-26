@@ -1,0 +1,98 @@
+﻿<h1>Список контактов</h1>
+<input type="button" value="Добавить" class="btn btn-default" (click)="add()" />
+<table *ngIf="tableMode; else create" class="table table-striped">
+    <thead>
+        <tr>
+            <td>Номер</td>
+            <td>Имя</td>
+            <td>Фамилия</td>
+            <td>Телефон</td>
+            <td>E - mail</td>
+            <td></td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let c of contacts">
+            <ng-template [ngIf]="contact?.id != c.id" [ngIfElse]="edit">
+                <td>{{c?.number}}</td>
+                <td>{{c?.firstName}}</td>
+                <td>{{c?.lastName}}</td>
+                <td>{{c?.tel}}</td>
+                <td>{{c?.email}}</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" (click)="editcontact(c)">Изменить</button>
+                    <button class="btn btn-sm btn-danger" (click)="delete(c)">Удалить</button>
+                </td>
+            </ng-template>
+        </tr>
+    </tbody>
+</table>
+
+<!--шаблон для редактирования-->
+<ng-template #edit>
+    <td>
+        <input type="text" [(ngModel)]="contact.number" class="form-control" name="number" #number="ngModel" required />
+        <div [hidden]="number.valid || number.untouched" class="alert alert-danger">
+            Не указан номер
+        </div>
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="contact.firstName" class="form-control" #firstname="ngModel" name="firstname" required />
+        <div [hidden]="firstname.valid || firstname.untouched" class="alert alert-danger">
+            Не указано имя
+        </div>
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="contact.lastName" class="form-control" name="lastname" #lastname="ngModel" required />
+        <div [hidden]="lastname.valid || lastname.untouched" class="alert alert-danger">
+            Не указана фамилия
+        </div>
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="contact.tel" class="form-control" />
+    </td>
+    <td>
+        <input type="text" [(ngModel)]="contact.email" class="form-control" />
+    </td>
+    <td>
+        <input [disabled]="firstname.invalid || lastname.invalid || number.invalid" type="button" value="Сохранить" (click)="save()" class="btn btn-sm btn-success" />
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-sm btn-warning" />
+    </td>
+</ng-template>
+
+<!--шаблон для добавления-->
+<ng-template #create>
+    <div class="form-group">
+        <label>Номер</label>
+        <input type="text" [(ngModel)]="contact.number" class="form-control" name="number" #number="ngModel" required />
+        <div [hidden]="number.valid || number.untouched" class="alert alert-danger">
+            Не указан номер
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Имя</label>
+        <input type="text" [(ngModel)]="contact.firstName" class="form-control" #firstname="ngModel"  name="firstname" required />
+        <div [hidden]="firstname.valid || firstname.untouched" class="alert alert-danger">
+            Не указано имя
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Фамилия</label>
+        <input type="text" [(ngModel)]="contact.lastName" class="form-control" name="lastname" #lastname="ngModel"  required />
+        <div [hidden]="lastname.valid || lastname.untouched" class="alert alert-danger">
+            Не указана фамилия
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Телефон</label>
+        <input type="text" [(ngModel)]="contact.tel" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>E - mail</label>
+        <input type="text" [(ngModel)]="contact.email" class="form-control" />
+    </div>
+    <div>
+        <input [disabled]="firstname.invalid || lastname.invalid || number.invalid" type="button" value="Сохранить" (click)="save()" class="btn btn-success" />
+        <input  type="button" value="Отмена" (click)="cancel()" class="btn btn-warning" />
+    </div>
+</ng-template>
